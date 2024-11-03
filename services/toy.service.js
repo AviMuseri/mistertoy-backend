@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { utilService } from './util.service.js'
 
-const PAGE_SIZE = 3
+const PAGE_SIZE = 5
 const toys = utilService.readJsonFile('data/toy.json')
 
 export const toyService = {
@@ -41,12 +41,16 @@ function query(filterBy = {}) {
       }
     })
   }
-  const { pageIdx } = filterBy
-  if (pageIdx !== undefined) {
-    let startIdx = +pageIdx * PAGE_SIZE
+  const filteredToysLength = filteredToys.length
+
+  if (filterBy.pageIdx !== undefined) {
+    const startIdx = filterBy.pageIdx * PAGE_SIZE
     filteredToys = filteredToys.slice(startIdx, startIdx + PAGE_SIZE)
   }
-  return Promise.resolve(filteredToys)
+
+  return Promise.resolve(getMaxPage(filteredToysLength)).then(maxPage => {
+    return { toys: filteredToys, maxPage }
+  })
 }
 
 function get(toyId) {
@@ -95,4 +99,11 @@ function _saveToysToFile() {
       resolve()
     })
   })
+}
+
+function getMaxPage(filteredToysLength) {
+  if (filteredToysLength) {
+    return Promise.resolve(Math.ceil(filteredToysLength / PAGE_SIZE))
+  }
+  return Promise.resolve(Math.ceil(toys.length / PAGE_SIZE))
 }
