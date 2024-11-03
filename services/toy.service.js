@@ -12,7 +12,6 @@ export const toyService = {
 }
 
 function query(filterBy = {}) {
-  // console.log('filterBy:', filterBy)
 
   let filteredToys = toys
   if (filterBy.txt) {
@@ -27,7 +26,7 @@ function query(filterBy = {}) {
   if (filterBy.labels && filterBy.labels.length) {
     filteredToys = filteredToys.filter(toy =>
       filterBy.labels.every(label => toy.labels.includes(label))
-      // filterBy.labels.some(label => toy.labels.includes(label))
+
     )
   }
 
