@@ -35,8 +35,6 @@ app.get('/api/toy', (req, res) => {
     const { txt, inStock = null, pageIdx, sortBy, labels = [] } = req.query
 
     const filterBy = { txt, inStock, pageIdx: +pageIdx, sortBy, labels }
-
-    console.log('filterBy:', filterBy)
     toyService.query(filterBy)
         .then(toys => {
             res.send(toys)

@@ -1,7 +1,8 @@
 import fs from 'fs'
 import { utilService } from './util.service.js'
+import { log } from 'console'
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 4
 const toys = utilService.readJsonFile('data/toy.json')
 
 export const toyService = {
@@ -12,6 +13,7 @@ export const toyService = {
 }
 
 function query(filterBy = {}) {
+  console.log(filterBy);
 
   let filteredToys = toys
   if (filterBy.txt) {
